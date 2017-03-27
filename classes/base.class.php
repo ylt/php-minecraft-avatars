@@ -61,8 +61,14 @@ abstract class Base {
             return false;
 
         $path = $this->CACHE . $this->name . ".png";
+        
+        $refresh = false;
+        if (!file_exists($path))
+            $refresh = true;
+        elseif (filemtime($path) < time()-(60*30)) //cache for 30 mins
+            $refresh = true;
 
-        if(!file_exists($path)) {
+        if($refresh)) {
             $this->skin = @imagecreatefrompng($this->url);
 
             if($this->skin === false)
